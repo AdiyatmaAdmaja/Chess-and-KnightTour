@@ -1,44 +1,83 @@
 package Main;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        
+
+        // Menampilkan dialog pilihan game
+        String[] options = { "Catur Normal", "Knight Tour" };
+        int choice = JOptionPane.showOptionDialog(
+                null,
+                "Selamat Datang! Silakan pilih mode permainan:",
+                "Pilihan Game",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (choice == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
+        }
+
         // Membuat "Meja" untuk papan Catur
         JFrame frame = new JFrame();
-        frame.getContentPane().setBackground(new Color(6, 96, 107));;
-        frame.setLayout(new GridBagLayout());
+        frame.getContentPane().setBackground(new Color(6, 96, 107));
+        // MENGUBAH LAYOUT UTAMA MENJADI BORDERLAYOUT
+        frame.setLayout(new BorderLayout(10, 10)); // BorderLayout dengan sedikit jarak
         frame.setMinimumSize(new Dimension(1000, 1000));
         frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Membuat papan Catur
-        Papan board = new Papan();
-        
+        Papan board;
+
         // Membuat Outline Papan Catur
         JPanel boardContainer = new JPanel();
-        boardContainer.setLayout(new BorderLayout()); // Gunakan BorderLayout untuk menampung Papan
-        boardContainer.setBackground(Color.WHITE); // Bisa diatur untuk melihat batasnya
+        boardContainer.setLayout(new GridBagLayout()); // Gunakan GridBagLayout untuk menampung Papan agar tetap ditengah
+        boardContainer.setOpaque(false); // Buat transparan agar background frame terlihat
 
-        // Tambahkan Papan Catur ke dalam JPanel baru
-        boardContainer.add(board, BorderLayout.CENTER);
+        if (choice == 0) { // Catur Normal
+            frame.setTitle("Catur Normal");
+            board = new Papan("CHESS");
+            boardContainer.add(board); // Tambahkan board ke container
+            frame.add(boardContainer, BorderLayout.CENTER); // Tambahkan container ke frame
+        } else { // Knight Tour
+            frame.setTitle("Knight's Tour");
+            board = new Papan("KNIGHT_TOUR");
+            boardContainer.add(board); // Tambahkan board ke container
+            frame.add(boardContainer, BorderLayout.CENTER); // Tambahkan container ke frame
 
-        // Buat Border yang akan diaplikasikan ke JPanel penampung
-        Border externalBorder = BorderFactory.createLineBorder(new Color(246, 188, 41), 5); // Contoh: border merah tebal 5 piksel
-        boardContainer.setBorder(externalBorder);
+            // --- BAGIAN BARU: Panel untuk Tombol Restart ---
+            JPanel controlPanel = new JPanel();
+            controlPanel.setBackground(new Color(6, 96, 107));
 
-        // Menambahkan boardContainer ke "Meja"
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.NONE;
-        frame.add(boardContainer, gbc);
+            JButton restartButton = new JButton("Restart Tour");
+            restartButton.setFont(new Font("Arial", Font.BOLD, 16));
+            restartButton.setFocusable(false);
 
-        // Menambahkan Papan Catur ke "Meja"
-        frame.setMinimumSize(new Dimension(800, 800)); // Ukuran minimum frame
+            // Tambahkan Aksi untuk tombol restart
+            restartButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    board.restartKnightTour(); // Panggil metode restart di Papan
+                }
+            });
+
+            controlPanel.add(restartButton);
+
+            // Tambahkan panel kontrol ke bagian bawah frame
+            frame.add(controlPanel, BorderLayout.SOUTH);
+
+            JOptionPane.showMessageDialog(frame, "Silakan klik petak mana saja untuk memulai Knight's Tour.",
+                    "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

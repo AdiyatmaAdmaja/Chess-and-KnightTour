@@ -40,19 +40,29 @@ public class Input extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
 
-        int col = e.getX() / board.ukuranPetak;
-        int row = e.getY() / board.ukuranPetak;
-
         if (board.selectedBidak != null) {
-            Move move = new Move(board, board.selectedBidak, col, row);
+            int col = e.getX() / board.ukuranPetak;
+            int row = e.getY() / board.ukuranPetak;
 
-            if (board.isValidMove(move)) {
-                board.makeMove(move);
-            } else {
+            // --- BAGIAN BARU: PENGECEKAN BATAS PAPAN ---
+            // Cek apakah posisi pelepasan berada di dalam papan (0-7)
+            boolean isOutOfBounds = (col < 0 || col > 7 || row < 0 || row > 7);
+
+            if (isOutOfBounds) {
+                // Jika di luar papan, langsung kembalikan bidak ke posisi semula
                 board.selectedBidak.xPos = board.selectedBidak.col * board.ukuranPetak;
                 board.selectedBidak.yPos = board.selectedBidak.row * board.ukuranPetak;
-            }
+            } else {
+                // Jika di dalam papan, proses pergerakan seperti biasa
+                Move move = new Move(board, board.selectedBidak, col, row);
 
+                if (board.isValidMove(move)) {
+                    board.makeMove(move);
+                } else {
+                    board.selectedBidak.xPos = board.selectedBidak.col * board.ukuranPetak;
+                    board.selectedBidak.yPos = board.selectedBidak.row * board.ukuranPetak;
+                }
+            }
         }
 
         board.selectedBidak = null;

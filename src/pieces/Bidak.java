@@ -41,7 +41,7 @@ public class Bidak {
     // Membagi Gambar Pieces
     protected int sheetScale = sheet.getWidth() / 6;
 
-    Image sprite;
+    public Image sprite;
 
     Papan board;
 
