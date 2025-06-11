@@ -52,7 +52,7 @@ public class Main {
             boardContainer.add(board); // Tambahkan board ke container
             frame.add(boardContainer, BorderLayout.CENTER); // Tambahkan container ke frame
 
-            // --- BAGIAN BARU: Panel untuk Tombol Restart ---
+            // Panel untuk Tombol Restart
             JPanel controlPanel = new JPanel();
             controlPanel.setBackground(new Color(6, 96, 107));
 

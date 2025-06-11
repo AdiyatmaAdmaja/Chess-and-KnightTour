@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import Util.Input;
-import Util.KnightTour; // Import kelas KnightTour yang sudah diganti nama
+import Util.KnightTour;
 import Util.Move;
 import pieces.*;
 
@@ -23,13 +23,13 @@ public class Papan extends JPanel {
 
     Input input = new Input(this); //
 
-    // Variabel baru untuk mode game dan hasil Knight Tour
+    // Variabel untuk mode game dan hasil Knight Tour
     private String gameMode;
     private int[][] knightTourSolution;
     private KnightTour ktLogic;
     private boolean tourStarted = false;
 
-    // Modifikasi Konstruktor untuk menerima mode permainan
+    // Konstruktor untuk menerima mode permainan
     public Papan(String gameMode) {
         this.gameMode = gameMode;
         this.setPreferredSize(new Dimension(cols * ukuranPetak, rows * ukuranPetak));
