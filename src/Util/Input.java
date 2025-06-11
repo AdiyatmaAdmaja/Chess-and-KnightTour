@@ -44,7 +44,6 @@ public class Input extends MouseAdapter {
             int col = e.getX() / board.ukuranPetak;
             int row = e.getY() / board.ukuranPetak;
 
-            // --- BAGIAN BARU: PENGECEKAN BATAS PAPAN ---
             // Cek apakah posisi pelepasan berada di dalam papan (0-7)
             boolean isOutOfBounds = (col < 0 || col > 7 || row < 0 || row > 7);
 
